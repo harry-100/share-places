@@ -1,8 +1,3 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-
-import PlaceList from '../components/PlaceList';
-
 const DUMMY_PLACES = [
     {
         id: 'p1',
@@ -42,10 +37,6 @@ const DUMMY_PLACES = [
     }
 ];
 
-const UserPlaces = () => {
-  const userId = useParams().userId;
-  const loadedPlaces = DUMMY_PLACES.filter(place => place.creator === userId);
-  return <PlaceList items={loadedPlaces} />;
-};
+MainHeader.css => background-image: linear-gradient(to right, #cc2b5e, #753a88);  
 
-export default UserPlaces;
+NavLinks.css => background: #00d3f8; line 27
