@@ -6,7 +6,7 @@ const router = express.Router();
 const { check } = require("express-validator");
 
 router.get('/', usersControllers.getUsers);
-router.post('/signUp', 
+router.post('/signup', 
 [
     check("name").not().isEmpty(),
     check("email").normalizeEmail().isEmail(),
