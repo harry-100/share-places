@@ -8,31 +8,6 @@ const getCoordsForAddress = require("../util/location");
 const Place = require("../models/place");
 const User = require("../models/user");
 
-let DUMMY_PLACES = [
-  {
-    id: "p1",
-    title: "Empire State Building",
-    description: "One of the most famous sky scrapers in the world!",
-    location: {
-      lat: 40.7484474,
-      lng: -73.9871516,
-    },
-    address: "20 W 34th St, New York, NY 10001",
-    creator: "u1",
-  },
-  {
-    id: "p2",
-    title: "Statue of Liberty",
-    description: "One of the most famous sky scrapers in the world!",
-    location: {
-      lat: 40.7484474,
-      lng: -73.9871516,
-    },
-    address: "20 W 34th St, New York, NY 10001",
-    creator: "u1",
-  },
-];
-
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
   let place;
@@ -109,13 +84,11 @@ const createPlace = async (req, res, next) => {
   });
 
   let user;
-  console.log("Creator is ", creator);
   try {
     user = await User.findById(creator);
-    console.log("User is ", user);
   } catch (err) {
     const error = new HttpError(
-      "Creating user place failed, please try again.",
+      "Creating place failed, please try again.",
       500
     );
     return next(error);
@@ -134,7 +107,7 @@ const createPlace = async (req, res, next) => {
     await sess.commitTransaction(); // after this line, the data is saved to the database
   } catch (err) {
     const error = new HttpError(
-      "Creating sess place failed, please try again.",
+      "Creating place failed, please try again.",
       500
     );
     return next(error);
@@ -180,7 +153,7 @@ const deletePlace = async (req, res, next) => {
   const placeId = req.params.pid;
   let place;
   try {
-    place = await Place.findById(placeId).populate('creator');
+    place = await Place.findById(placeId).populate("creator");
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not delete the place",
@@ -190,17 +163,17 @@ const deletePlace = async (req, res, next) => {
     return next(error);
   }
 
-    if (!place) {
-        const error = new HttpError('Could not find the place for this id', 404);
-        return next(error);
-    }
+  if (!place) {
+    const error = new HttpError("Could not find the place for this id", 404);
+    return next(error);
+  }
 
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await place.remove({ session: sess });
     place.creator.places.pull(place);
-    await place.creator.save({session: sess})
+    await place.creator.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
