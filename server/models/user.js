@@ -18,10 +18,13 @@ const userSchema = new Schema({
     required: true,
     minlength: 6,
   },
-  places: {
-    type: String,
-    required: true,
-  },
+  places: [
+    {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      ref: "Place",
+    },
+  ],
   image: {
     type: String,
     required: true,
