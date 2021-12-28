@@ -5,7 +5,6 @@ const { v4: uuid } = require("uuid");
 
 const { validationResult } = require("express-validator");
 
-
 const getUsers = async (req, res, next) => {
   let users;
   try {
@@ -86,7 +85,10 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ message: "Logged In" });
+  res.json({
+    message: "Logged In",
+    user: existingUser.toObject({ getters: true })
+  });
 };
 
 exports.getUsers = getUsers;
