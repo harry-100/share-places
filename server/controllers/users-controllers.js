@@ -47,8 +47,7 @@ const signup = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    image:
-      "https://images.pexels.com/photos/839011/pexels-photo-839011.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+    image: req.file.path,
     places: [],
     password,
   });
@@ -87,7 +86,7 @@ const login = async (req, res, next) => {
 
   res.json({
     message: "Logged In",
-    user: existingUser.toObject({ getters: true })
+    user: existingUser.toObject({ getters: true }),
   });
 };
 
