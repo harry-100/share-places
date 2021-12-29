@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const HttpError = require("../models/http-error");
+const bcrypt = require("bcryptjs");
 
 const { v4: uuid } = require("uuid");
 
@@ -44,12 +45,21 @@ const signup = async (req, res, next) => {
     );
     return next(error);
   }
+
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(password, 12);
+  } catch (err) {
+    const error = new HttpError("Could not create user, please try again", 500);
+    return next(error);
+  }
+
   const createdUser = new User({
     name,
     email,
     image: req.file.path,
     places: [],
-    password,
+    password: hashedPassword,
   });
 
   try {
@@ -76,9 +86,27 @@ const login = async (req, res, next) => {
     );
     return next(error);
   }
-  if (!existingUser || existingUser.password !== password) {
+  if (!existingUser) {
     const error = new HttpError(
       "Invalid credentials, could not log you in.",
+      401
+    );
+    return next(error);
+  }
+
+  let isValidPassword = false;
+  try {
+    isValidPassword = await bcrypt.compare(password, existingUser.password);
+  } catch (err) {
+    const error = new HttpError(
+      "Logging in failed, Please try again later",
+      500
+    );
+    return next(error);
+  }
+  if (!isValidPassword){
+    const error = new HttpError(
+      "Logging in failed, Please try again later",
       401
     );
     return next(error);
