@@ -87,7 +87,6 @@ const createPlace = async (req, res, next) => {
     image: req.file.path,
     creator,
   });
-  console.log("CREATED PLACXE", createdPlace);
   let user;
   try {
     user = await User.findById(creator);
@@ -103,8 +102,6 @@ const createPlace = async (req, res, next) => {
     const error = new HttpError("Could not find user for provided id.", 404);
     return next(error);
   }
-
-  console.log(user);
 
   try {
     const sess = await mongoose.startSession();
@@ -146,6 +143,13 @@ const updatePlace = async (req, res, next) => {
     return next(error);
   }
 
+  if (place.creator.toString() !== req.userData.userId) {
+    const error = new HttpError(
+      'You are not allowed to edit this place.',
+      401
+    );
+    return next(error);
+  }
   place.title = title;
   place.description = description;
 
@@ -180,6 +184,16 @@ const deletePlace = async (req, res, next) => {
     const error = new HttpError("Could not find place for this id.", 404);
     return next(error);
   }
+
+  if (place.creator !== req.userData.userId) {
+    const error = new HttpError(
+      'You are not allowed to edit this place.',
+      401
+    );
+    return next(error);
+  }
+
+
   const imagePath = place.image;
   try {
     const sess = await mongoose.startSession();

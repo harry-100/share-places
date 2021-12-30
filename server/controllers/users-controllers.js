@@ -75,7 +75,7 @@ const signup = async (req, res, next) => {
     token = jwt.sign(
       { userId: createdUser.id, email: createdUser.email },
       process.env.JWT_SECRET,
-      process.env.JWT_EXPIRATION
+     {expiresIn: process.env.JWT_EXPIRATION}
     );
   } catch (err) {
     const error = new HttpError("Signing up failed, please try again.", 500);
@@ -103,7 +103,7 @@ const login = async (req, res, next) => {
   if (!existingUser) {
     const error = new HttpError(
       "Invalid credentials, could not log you in.",
-      401
+      403
     );
     return next(error);
   }
@@ -121,7 +121,7 @@ const login = async (req, res, next) => {
   if (!isValidPassword) {
     const error = new HttpError(
       "Logging in failed, Please try again later",
-      401
+      403
     );
     return next(error);
   }
@@ -131,7 +131,7 @@ const login = async (req, res, next) => {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
       process.env.JWT_SECRET,
-      process.env.JWT_EXPIRATION
+      { expiresIn: process.env.JWT_EXPIRATION }
     );
   } catch (err) {
     const error = new HttpError("Signing up failed, please try again.", 500);
