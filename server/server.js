@@ -9,7 +9,7 @@ const placesRoutes = require("./routes/places-routes");
 const usersRoutes = require("./routes/users-routes");
 
 const HttpError = require("./models/http-error");
-
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(bodyParser.json());
@@ -51,7 +51,7 @@ mongoose
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster-001.zanmk.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
   )
   .then(() => {
-    app.listen(3001);
+    app.listen(PORT);
   })
   .catch((err) => {
     console.log(err);
