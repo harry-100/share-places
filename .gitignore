@@ -106,3 +106,4 @@ dist
 # user files
 .DS_Store
 project-overview/
+.env
