@@ -83,6 +83,7 @@ const Auth = () => {
           }
         );
         auth.login(responseData.userId, responseData.token);
+        console.log("Data", responseData);
       } catch (err) {}
     } else {
       try {
@@ -98,6 +99,7 @@ const Auth = () => {
         );
 
         auth.login(responseData.userId, responseData.token);
+        console.log("Data", responseData);
       } catch (err) {}
     }
   };
