@@ -2,7 +2,7 @@
   "name": "share-place-server",
   "version": "1.0.0",
   "description": "this app allows users to share their favorite places",
-  "engines":{
+  "engines": {
     "node": "14.x",
     "npm": "7.x"
   },
@@ -24,7 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.13",
     "mongoose-unique-validator": "^2.0.3",
-    "multer": "^1.4.4",
+    "multer": "^0.1.8",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
