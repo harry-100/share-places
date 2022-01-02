@@ -34,7 +34,7 @@ app.use('/api/users', usersRoutes);
 
     // serve static assets if in production
 app.use((req, res, next) => {
-res.sendFile(path.join(__dirname, '/public/index.html'));
+res.sendFile(path.resolve(__dirname, 'public','index.html'));
 });
 
 // app.use((req, res, next) => {
