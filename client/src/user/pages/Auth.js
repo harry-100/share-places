@@ -72,7 +72,7 @@ const Auth = () => {
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + "/users/login",
+         `${process.env.REACT_APP_BACKEND_URL}/users/login`,
           "POST",
           JSON.stringify({
             email: formState.inputs.email.value,
@@ -92,8 +92,9 @@ const Auth = () => {
         formData.append("password", formState.inputs.password.value);
         formData.append("name", formState.inputs.name.value);
         formData.append("image", formState.inputs.image.value);
+        console.log("is request sent");
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + "/users/signup",
+          `${process.env.REACT_APP_BACKEND_URL}/users/signup`,
           "POST",
           formData
         );
